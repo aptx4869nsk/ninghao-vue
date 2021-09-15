@@ -1,101 +1,72 @@
 <template>
-  <h3>{{ name }}</h3>
-  {{ processStatus }}
-  <button v-on:click="resetName">重置</button>
-  <button @click="setName">設置</button>
+  <h3>{{ title_1 }}</h3>
+  <AppButtonOne /> <app-button-one />
 
-  <br />
-  <br />
+  <h3>{{ title_2 }}</h3>
+  <app-button-two text="确定" /> <app-button-two />
 
-  <strong>v-for</strong>
-  <div v-for="(post, index) in postList" :key="post.id">
-    {{ index + 1 }} {{ post.content }} - {{ post.author }}
-  </div>
+  <h3>{{ title_3 }}</h3>
+  <app-button-three text="确定" @tap="onTapAppButton" @init="onInitAppButton" />
+  <app-button-three @tap="onTapAppButton" @init="onInitAppButton" />
 
-  <br />
-  <br />
+  <h3>{{ title_4 }}</h3>
+  <app-button-four @tap="onTapAppButton" @init="onInitAppButton">
+    提交
+  </app-button-four>
+  <app-button-four />
 
-  <strong>v-if</strong>
-  <br />
-  <div v-if="visible">隐藏的内容！</div>
-  <button v-on:click="visible = !visible">
-    {{ visible ? '隐藏' : '显示' }}
-  </button>
+  <h3>{{ title_5 }} , {{ title_6 }} , {{ title_7 }}</h3>
+  <UserProfile />
 
-  <br />
-  <br />
+  <h3>{{ title_8 }}</h3>
+  <UserLogin />
 
-  <strong>绑定Class</strong>
-  <br />
-  <div
-    :class="['item-menu', { active: currentItem === index }]"
-    @click="currentItem = index"
-    v-for="(item, index) in menuItems"
-    :key="index"
-  >
-    {{ item }}
-  </div>
+  <h3>{{ title_9 }}</h3>
+  <life-cycle />
 </template>
 
 <script>
+import AppButtonOne from './components/app-button-one.vue';
+import AppButtonTwo from './components/app-button-two.vue';
+import AppButtonThree from './components/app-button-three.vue';
+import AppButtonFour from './components/app-button-four.vue';
+import UserProfile from './components/dynamic components/user-profile.vue';
+import UserLogin from './components/自定义组件使用v-model/user-login.vue';
+import LifeCycle from './components/life-cycle.vue';
+
 export default {
   data() {
     return {
-      name: 'Hello World',
-
-      postList: [
-        {
-          id: 1,
-          content: '故人西辤黃鶴樓，烟花三月下揚州',
-          author: '李白',
-        },
-        {
-          id: 2,
-          content: '好雨知时节，当春乃发生',
-          author: '杜普',
-        },
-        {
-          id: 3,
-          content: '浔阳江头夜送客，枫叶荻花秋瑟瑟',
-          author: '白居易',
-        },
-      ],
-
-      visible: false,
-
-      menuItems: ['首页', '热门', '发布'],
-      currentItem: 0,
+      title_1: 'Scoped: 限定组件样式的应用范围',
+      title_2: 'props: Vue组件属性',
+      title_3: '监听子组件的事件',
+      title_4: 'slot: 在 Vue 组件里用插槽分发内容',
+      title_5: '动态组件 (Dynamic Components)',
+      title_6: 'keep-alive: 保持动态组件的活动状态',
+      title_7: '$refs: 引用模板',
+      title_8: '在自定义组件上使用v-model',
+      title_9: 'Vue 组件的生命周期方法',
     };
   },
 
-  computed: {
-    processStatus() {
-      return this.name === 'Hello World' ? '初始化...' : '成功設置了數據!';
-    },
-  },
-
-  watch: {
-    name(newName, oldName) {
-      console.log(`name 發生了變化：${oldName} -> ${newName}`);
-    },
-  },
-
-  created() {
-    console.log('App 組件已創建!');
-
-    this.setName();
-  },
-
   methods: {
-    setName() {
-      setTimeout(() => {
-        this.name = '歡迎世界';
-      }, 3000);
+    onTapAppButton(text) {
+      console.log('on tap app button', text);
     },
 
-    resetName() {
-      this.name = 'Hello World';
+    onInitAppButton() {
+      // console.log('on init app button');
     },
+  },
+
+  components: {
+    AppButtonOne,
+    AppButtonTwo,
+    AppButtonThree,
+    AppButtonFour,
+    UserProfile,
+    UserLogin,
+    LifeCycle,
   },
 };
 </script>
