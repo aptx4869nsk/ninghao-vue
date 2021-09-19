@@ -1,105 +1,334 @@
 <template>
-  <h3>{{ name }}</h3>
-  {{ processStatus }}
-  <button v-on:click="resetName">重置</button>
-  <button @click="setName">設置</button>
-
-  <br />
-  <br />
-
-  <strong>v-for</strong>
-  <div v-for="(post, index) in postList" :key="post.id">
-    {{ index + 1 }} {{ post.content }} - {{ post.author }}
-  </div>
-
-  <br />
-  <br />
-
-  <strong>v-if</strong>
-  <br />
-  <div v-if="visible">隐藏的内容！</div>
-  <button v-on:click="visible = !visible">
-    {{ visible ? '隐藏' : '显示' }}
-  </button>
-
-  <br />
-  <br />
-
-  <strong>绑定Class</strong>
-  <br />
-  <div
-    :class="['item-menu', { active: currentItem === index }]"
-    @click="currentItem = index"
-    v-for="(item, index) in menuItems"
-    :key="index"
-  >
-    {{ item }}
+  <div class="custom">
+    <div class="page">
+      <div class="card">
+        <div class="card__header">
+          <h3 class="card-title">{{ name }}</h3>
+          <div class="card-subtitle">
+            {{ sub_title_1 }}
+          </div>
+        </div>
+        <div class="card__content">
+          <div :class="['emoji', { hidden: !isFirstEmojiActive }]">
+            🌳
+          </div>
+        </div>
+        <div class="card__action">
+          <div class="status">
+            <small>isActive: {{ isFirstEmojiActive }}</small>
+          </div>
+          <button
+            @click="isFirstEmojiActive = !isFirstEmojiActive"
+            :class="{ active: isFirstEmojiActive }"
+          >
+            请按这里
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+      <div class="card">
+        <div class="card__header">
+          <h3 class="card-title">{{ name }}</h3>
+          <div class="card-subtitle">
+            {{ sub_title_2 }}
+          </div>
+        </div>
+        <div class="card__content">
+          <div
+            v-if="isSecondEmojiActive"
+            :class="['emoji', { pulse: isSecondEmojiActive }]"
+          >
+            😍
+          </div>
+        </div>
+        <div class="card__action">
+          <div class="status">
+            <small>isActive: {{ isSecondEmojiActive }}</small>
+          </div>
+          <button
+            @click="isSecondEmojiActive = !isSecondEmojiActive"
+            :class="{ active: isSecondEmojiActive }"
+          >
+            请按这里
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+      <div class="card">
+        <div class="card__header">
+          <h3 class="card-title">{{ name }}</h3>
+          <div class="card-subtitle">
+            {{ sub_title_3 }}
+          </div>
+        </div>
+        <div class="card__content">
+          <transition>
+            <div v-if="isThirdEmojiActive" class="emoji">
+              🌴
+            </div>
+          </transition>
+        </div>
+        <div class="card__action">
+          <div class="status">
+            <small>isActive: {{ isThirdEmojiActive }}</small>
+          </div>
+          <button
+            @click="isThirdEmojiActive = !isThirdEmojiActive"
+            :class="{ active: isThirdEmojiActive }"
+          >
+            请按这里
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+      <div class="card">
+        <div class="card__header">
+          <h3 class="card-title">{{ name }}</h3>
+          <div class="card-subtitle">
+            {{ sub_title_4 }}
+          </div>
+        </div>
+        <div class="card__content">
+          <transition name="slide">
+            <div v-if="isFourdEmojiActive" class="emoji">
+              😆
+            </div>
+          </transition>
+        </div>
+        <div class="card__action">
+          <div class="status">
+            <small>isActive: {{ isFourdEmojiActive }}</small>
+          </div>
+          <button
+            @click="isFourdEmojiActive = !isFourdEmojiActive"
+            :class="{ active: isFourdEmojiActive }"
+          >
+            请按这里
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+      <div class="card">
+        <div class="card__header">
+          <h3 class="card-title">{{ name }}</h3>
+          <div class="card-subtitle">
+            {{ sub_title_5 }}
+          </div>
+        </div>
+        <div class="card__content">
+          <transition name="pulse">
+            <div v-if="isFifthEmojiActive" class="emoji">
+              👋
+            </div>
+          </transition>
+        </div>
+        <div class="card__action">
+          <div class="status">
+            <small>isActive: {{ isFifthEmojiActive }}</small>
+          </div>
+          <button
+            @click="isFifthEmojiActive = !isFifthEmojiActive"
+            :class="{ active: isFifthEmojiActive }"
+          >
+            请按这里
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+      <div class="card">
+        <div class="card__header">
+          <h3 class="card-title">{{ name }}</h3>
+          <div class="card-subtitle">
+            {{ sub_title_6 }}
+          </div>
+        </div>
+        <div class="card__content">
+          <transition
+            name="custom-classes"
+            enter-active-class="animate__animated animate__tada"
+            leave-active-class="animate__animated animate__bounce"
+          >
+            <div v-if="isSixthEmojiActive" class="emoji">
+              👻
+            </div>
+          </transition>
+        </div>
+        <div class="card__action">
+          <div class="status">
+            <small>isActive: {{ isSixthEmojiActive }}</small>
+          </div>
+          <button
+            @click="isSixthEmojiActive = !isSixthEmojiActive"
+            :class="{ active: isSixthEmojiActive }"
+          >
+            请按这里
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+      <div class="card">
+        <div class="card__header">
+          <h3 class="card-title">{{ name }}</h3>
+          <div class="card-subtitle">
+            {{ sub_title_7 }}
+          </div>
+        </div>
+        <div class="card__content">
+          <transition
+            name="custom-classes"
+            enter-active-class="animate__animated animate__tada"
+            leave-active-class="animate__animated animate__bounce"
+            mode="out-in"
+          >
+            <component :is="currentEmoji"></component>
+          </transition>
+        </div>
+        <div class="card__action">
+          <div class="status">
+            <small>isActive: {{ isSeventhEmojiActive }}</small>
+          </div>
+          <button
+            @click="isSeventhEmojiActive = !isSeventhEmojiActive"
+            :class="{ active: isSeventhEmojiActive }"
+          >
+            请按这里
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+      <div class="card">
+        <div class="card__header">
+          <h3 class="card-title">{{ name }}</h3>
+          <div class="card-subtitle">
+            {{ sub_title_8 }}
+          </div>
+        </div>
+        <div class="card__content">
+          <!-- <transition-group name="slide"> -->
+          <transition-group
+            name="custom"
+            leave-active-class="animate__animated animate__tada"
+          >
+            <div class="emoji" v-for="emoji in emojiList" :key="emoji">
+              {{ emoji }}
+            </div>
+          </transition-group>
+        </div>
+        <div class="card__action">
+          <div class="status">
+            <small>Used 'lodash'</small><br />
+            <small>isActive: {{ isEighthEmojiActive }}</small>
+          </div>
+          <button @click="shuffle" :class="{ active: isEighthEmojiActive }">
+            Shuffle
+          </button>
+          <button @click="pop">
+            Pop
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="page">
+      <div class="card">
+        <div class="card__header">
+          <h3 class="card-title">{{ name }}</h3>
+          <div class="card-subtitle">
+            {{ sub_title_9 }}
+          </div>
+        </div>
+        <div class="card__content">
+          <div class="emoji">{{ animatedNumber }}</div>
+        </div>
+        <div class="card__action">
+          <div class="status">
+            <small>Used 'gsap'</small><br />
+            <small>isActive: {{ isNinthEmojiActive }}</small>
+          </div>
+          <button
+            @click="number = number + 10"
+            :class="{ active: isNinthEmojiActive }"
+          >
+            请按这里
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import GhostEmoji from './components/ghost-emoji.vue';
+import RobotEmoji from './components/robot-emoji.vue';
+import _ from 'lodash';
+import gsap from 'gsap';
+
 export default {
   data() {
     return {
-      name: 'Hello World',
-
-      postList: [
-        {
-          id: 1,
-          content: '故人西辤黃鶴樓，烟花三月下揚州',
-          author: '李白',
-        },
-        {
-          id: 2,
-          content: '好雨知时节，当春乃发生',
-          author: '杜普',
-        },
-        {
-          id: 3,
-          content: '浔阳江头夜送客，枫叶荻花秋瑟瑟',
-          author: '白居易',
-        },
-      ],
-
-      visible: false,
-
-      menuItems: ['首页', '热门', '发布'],
-      currentItem: 0,
+      name: '过渡动画',
+      sub_title_1: '基于 Class 的过渡',
+      sub_title_2: '基于 Class 的动画',
+      sub_title_3: 'transition: 进入与离开过渡',
+      sub_title_4: 'transition: 指定过渡效果的名字',
+      sub_title_5: 'transition: 进入与离开动画',
+      sub_title_6: 'transition: 自定义过渡类',
+      sub_title_7: '组件之间的过渡',
+      sub_title_8: '列表的过渡与动画',
+      sub_title_9: '状态的过渡',
+      isFirstEmojiActive: true,
+      isSecondEmojiActive: false,
+      isThirdEmojiActive: true,
+      isFourdEmojiActive: true,
+      isFifthEmojiActive: true,
+      isSixthEmojiActive: true,
+      emoji: 'GhostEmoji',
+      isSeventhEmojiActive: true,
+      emojiList: ['😘', '🥰', '🤪'],
+      isEighthEmojiActive: true,
+      number: 0,
+      tweenedNumber: 0,
+      isNinthEmojiActive: true,
     };
   },
 
   computed: {
-    processStatus() {
-      return this.name === 'Hello World' ? '初始化...' : '成功設置了數據!';
+    currentEmoji() {
+      return this.isSeventhEmojiActive ? 'GhostEmoji' : 'RobotEmoji';
+    },
+
+    animatedNumber() {
+      return this.tweenedNumber.toFixed(0);
     },
   },
 
   watch: {
-    name(newName, oldName) {
-      console.log(`name 發生了變化：${oldName} -> ${newName}`);
+    number(newValue) {
+      gsap.to(this.$data, { duration: 0.5, tweenedNumber: newValue });
     },
-  },
-
-  created() {
-    console.log('App 組件已創建!');
-
-    this.setName();
   },
 
   methods: {
-    setName() {
-      setTimeout(() => {
-        this.name = '歡迎世界';
-      }, 3000);
+    shuffle() {
+      this.emojiList = _.shuffle(this.emojiList);
     },
 
-    resetName() {
-      this.name = 'Hello World';
+    pop() {
+      this.emojiList.pop();
     },
   },
+  components: { GhostEmoji, RobotEmoji },
 };
 </script>
 
 <style scoped>
 @import './styles/app.css';
+@import './styles/card.css';
+@import './styles/animate.css';
 </style>
