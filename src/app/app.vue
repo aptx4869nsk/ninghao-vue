@@ -1,100 +1,120 @@
 <template>
   <h3>{{ name }}</h3>
-  {{ processStatus }}
-  <button v-on:click="resetName">重置</button>
-  <button @click="setName">設置</button>
-
-  <br />
-  <br />
-
-  <strong>v-for</strong>
-  <div v-for="(post, index) in postList" :key="post.id">
-    {{ index + 1 }} {{ post.content }} - {{ post.author }}
-  </div>
-
-  <br />
-  <br />
-
-  <strong>v-if</strong>
-  <br />
-  <div v-if="visible">隐藏的内容！</div>
-  <button v-on:click="visible = !visible">
-    {{ visible ? '隐藏' : '显示' }}
-  </button>
-
-  <br />
-  <br />
-
-  <strong>绑定Class</strong>
-  <br />
-  <div
-    :class="['item-menu', { active: currentItem === index }]"
-    @click="currentItem = index"
-    v-for="(item, index) in menuItems"
-    :key="index"
-  >
-    {{ item }}
+  <input type="text" v-model="title" @keyup.enter="createPost" />
+  <div>{{ errorMessage }}</div>
+  <div v-for="post in posts" :key="post.id">
+    <input
+      type="text"
+      :value="post.title"
+      @keyup.enter="updatePost($event, post.id)"
+    />
+    <button @click="deletePost(post.id)">删除</button>
+    {{ post.title }} - <small>{{ post.user.name }}</small>
   </div>
 </template>
 
 <script>
+import { apiHttpClient } from '@/app/app.service';
+
 export default {
   data() {
     return {
       name: 'Hello World',
-
-      postList: [
-        {
-          id: 1,
-          content: '故人西辤黃鶴樓，烟花三月下揚州',
-          author: '李白',
-        },
-        {
-          id: 2,
-          content: '好雨知时节，当春乃发生',
-          author: '杜普',
-        },
-        {
-          id: 3,
-          content: '浔阳江头夜送客，枫叶荻花秋瑟瑟',
-          author: '白居易',
-        },
-      ],
-
-      visible: false,
-
-      menuItems: ['首页', '热门', '发布'],
-      currentItem: 0,
+      posts: [],
+      errorMessage: '',
+      user: {
+        name: '王皓',
+        password: '123123',
+      },
+      token: '',
+      title: '',
     };
   },
 
-  computed: {
-    processStatus() {
-      return this.name === 'Hello World' ? '初始化...' : '成功設置了數據!';
-    },
-  },
+  // created() {
+  // axios
+  //   .get('http://localhost:3000/posts1')
+  // .then(response => {
+  //   // console.log(response);
+  //   this.posts = response.data;
+  // })
+  // .catch(error => {
+  //   console.log(error.message);
+  //   this.errorMessage = error.message;
+  // });
+  // },
+  async created() {
+    this.getPosts();
 
-  watch: {
-    name(newName, oldName) {
-      console.log(`name 發生了變化：${oldName} -> ${newName}`);
-    },
-  },
-
-  created() {
-    console.log('App 組件已創建!');
-
-    this.setName();
+    // 用户登陆
+    try {
+      const response = await apiHttpClient.post('/login', this.user);
+      this.token = response.data.token;
+    } catch (error) {
+      this.errorMessage = error.message;
+    }
   },
 
   methods: {
-    setName() {
-      setTimeout(() => {
-        this.name = '歡迎世界';
-      }, 3000);
+    async deletePost(postId) {
+      try {
+        await apiHttpClient.delete(`/posts/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        });
+        this.getPosts();
+      } catch (error) {
+        this.errorMessage = error.message;
+      }
+    },
+    async updatePost(event, postId) {
+      console.log(event.target.value);
+      console.log(postId);
+      try {
+        await apiHttpClient.patch(
+          `/posts/${postId}`,
+          {
+            title: event.target.value,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          },
+        );
+        this.getPosts();
+      } catch (error) {
+        this.errorMessage = error.message;
+      }
+    },
+    async getPosts() {
+      try {
+        const response = await apiHttpClient.get('/posts');
+        this.posts = response.data;
+      } catch (error) {
+        this.errorMessage = error.message;
+      }
     },
 
-    resetName() {
-      this.name = 'Hello World';
+    async createPost() {
+      try {
+        const response = await apiHttpClient.post(
+          '/posts',
+          {
+            title: this.title,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+          },
+        );
+        this.title = '';
+        this.getPosts();
+      } catch (error) {
+        this.errorMessage = error.message;
+      }
     },
   },
 };
